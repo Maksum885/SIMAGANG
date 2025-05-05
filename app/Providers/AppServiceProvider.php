@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+\Carbon\Carbon::setLocale('id');
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
