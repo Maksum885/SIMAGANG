@@ -1,11 +1,11 @@
 @extends('layouts.dashboard-pp')
 
 @section('content')
-<h2 class="text-xl font-medium font-serif mb-5">Selamat Datang, Pembimbing Perusahaan!</h2>
+<pre>Selamat datang, {{ Auth::user()->username }}! Anda login sebagai Pembimbing Perusahaan.</pre>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-20 mb-8 p-6 bg-white rounded border">
     <div class="bg-blue-100 rounded p-6 text-center border border-blue-300">
-        <h3 class="text-4xl font-bold text-blue-800">36</h3>
+        <h3 class="text-4xl font-bold text-blue-800">{{ $totalMahasiswa }}</h3>
         <p class="text-lg">Total Mahasiswa</p>
     </div>
     <div class="bg-green-100 rounded p-6 text-center border border-green-300">
