@@ -10,6 +10,10 @@ use App\Http\Controllers\Admin\PembimbingPerusahaanController;
 use App\Http\Controllers\Mahasiswa\DashboardController as MahasiswaDashboardController;
 use App\Http\Controllers\PembimbingKampus\DashboardController as PembimbingKampusDashboardController;
 use App\Http\Controllers\PembimbingPerusahaan\DashboardController as PembimbingPerusahaanDashboardController;
+use App\Http\Controllers\PembimbingKampus\DataMahasiswaController;
+use App\Http\Controllers\PembimbingPerusahaan\DataPesertaMagangController;
+
+
 
 // Landing page
 Route::get('/', function () {
@@ -69,16 +73,21 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 // Mahasiswa
 Route::middleware(['auth', 'role:mahasiswa'])->prefix('mahasiswa')->name('mahasiswa.')->group(function () {
     Route::get('/dashboard', [MahasiswaDashboardController::class, 'index'])->name('beranda');
+    Route::get('/datamhhs', [DataMahasiswaController::class, 'index'])->name('datamhs');
+
 });
 
 // Pembimbing Kampus
 Route::middleware(['auth', 'role:pembimbing_kampus'])->prefix('pembimbing-kampus')->name('pk.')->group(function () {
     Route::get('/dashboard', [PembimbingKampusDashboardController::class, 'index'])->name('beranda');
+    Route::get('/datamhs', [DataMahasiswaController::class, 'index'])->name('datamhs');
 });
 
 // Pembimbing Perusahaan
-Route::middleware(['auth', 'role:pembimbing_perusahaan'])->prefix('pembimbing-perusahaan')->name('pp.')->group(function () {
-    Route::get('/dashboard', [PembimbingPerusahaanDashboardController::class, 'index'])->name('beranda');
+Route::middleware(['auth', 'role:pembimbing_kampus'])->prefix('pembimbing-kampus')->name('pk.')->group(function () {
+    Route::get('/dashboard', [PembimbingKampusDashboardController::class, 'index'])->name('beranda');
+    Route::get('/datapeserta', [DataPesertaMagangController::class, 'index'])->name('datapeserta');
+
 });
 
 // Redirect setelah login
