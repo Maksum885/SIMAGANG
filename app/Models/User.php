@@ -2,86 +2,43 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;   
+use App\Models\PembimbingIndustri;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    use HasFactory;
     protected $fillable = [
+        'nama_lengkap',
         'username',
-        'email',
-        'kontak',
         'role',
         'password',
-        
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
-
-    /**
-     * Get the role that owns the user.
-     */
-    public function role()
+    public function pembimbingIndustri()
     {
-        return $this->belongsTo(Role::class);
+        return $this->hasOne(PembimbingIndustri::class);
     }
 
-    /**
-     * Check if user is admin
-     */
-    public function isAdmin()
+    public function guruPembimbing()
     {
-        return $this->role->name === 'admin';
+        return $this->hasOne(GuruPembimbing::class);
     }
 
-    /**
-     * Check if user is mahasiswa
-     */
-    public function isMahasiswa()
+    public function siswa()
     {
-        return $this->role->name === 'mahasiswa';
+        return $this->hasOne(Siswa::class);
     }
-
-    /**
-     * Check if user is pembimbing perusahaan
-     */
-    public function isPembimbingPerusahaan()
+    public function aspekTeknis()
     {
-        return $this->role->name === 'pembimbing_perusahaan';
-    }
-
-    /**
-     * Check if user is pembimbing kampus
-     */
-    public function isPembimbingKampus()
-    {
-        return $this->role->name === 'pembimbing_kampus';
+        return $this->belongsToMany(AspekTeknis::class, 'aspek_teknis_user');
     }
 }

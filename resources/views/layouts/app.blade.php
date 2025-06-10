@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home | SIMAGANG</title>
-    <link rel="icon" href="{{ asset('icon1.png') }}" type="image/png">
+    <title>Home</title>
+    <link rel="icon" href="{{ asset('images/LOGOSMKN6BTM.png') }}" type="image/png">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -14,7 +14,7 @@
     <header>
         <nav class="fixed w-full transition-all bg-white z-50 py-4 duration-300" id="navbar">
             <div class="mx-auto flex items-center justify-between px-25">
-                <img src="{{ asset('images/logo2.png') }}" class="lg:w-45 w-35">
+                <img src="{{ asset('images/LOGOSMKN6BTM.png') }}" class="w-16 sm:w-24">
                 <div class="hidden lg:inline space-x-15 font-medium text-2xl">
                     <a href="#beranda" class="hover:text-sky-500 opacity-90">Beranda</a>
                     <a href="#tentang" class="hover:text-sky-500 opacity-90">Tentang Kami</a>
@@ -41,8 +41,8 @@
     </main>
 
     @if (!Request::is('login'))
-    <footer class="text-center bg-blue-400 text-white py-10 md:text-2xl text">
-        © Copyright by <strong>SIMAGANG</strong> 2025, All Right Reserved.
+    <footer class="text-center bg-blue-400 text-white py-6 sm:py-8 md:py-10 text-sm sm:text-base md:text-lg lg:text-2xl">
+        © Copyright by <strong>E-PKL SMK N 6 Batam</strong> 2025, All Right Reserved.
     </footer>
     @endif
 </body>

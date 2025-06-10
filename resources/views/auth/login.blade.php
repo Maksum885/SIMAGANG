@@ -3,44 +3,37 @@
 @section('content')
 <section class="flex items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6">
     <div class="w-full max-w-lg space-y-4">
-        <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold font-serif text-center">SIMAGANG</h1>
-        <p class="text-base sm:text-lg md:text-2xl text-center text-gray-500 mb-6 sm:mb-10">Sistem Manajemen Magang</p>
+        <img src="{{ asset('images/LOGOSMKN6BTM.png') }}" class="w-28 lg:w-38 ml-30 lg:ml-42 ">
+        <p class="text-base sm:text-lg md:text-2xl lg:text-3xl text-center text-gray-700 mb-6 sm:mb-10">E-PKL SMK N 6 BATAM</p>
 
-        <!-- Form login -->
+        @if (session('error'))
+        <div class="mb-4 text-sm text-red-600 bg-red-100 border border-red-400 p-3 rounded">
+            {{ session('error') }}
+        </div>
+        @endif
+
+
         <form method="POST" action="{{ route('login') }}">
             @csrf
-
-            @if ($errors->any())
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
-                    <ul class="list-disc pl-5 text-sm">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <!-- Pilih Role -->
-            <select name="role" class="w-full border p-3 text-base sm:text-xl md:text-2xl rounded" required>
-                <option value="">-- Pilih Role --</option>
+            <!-- pilih role -->
+            <select name="role" class="w-full border p-3 text-base sm:text-xl md:text-2xl rounded">
                 <option value="admin">Admin</option>
-                <option value="pembimbing-perusahaan">Pembimbing Perusahaan</option>
-                <option value="pembimbing-kampus">Pembimbing Kampus</option>
-                <option value="mahasiswa">Mahasiswa</option>
+                <option value="pembimbing_industri">Pembimbing Industri</option>
+                <option value="guru_pembimbing">Guru Pembimbing</option>
+                <option value="siswa">Siswa</option>
             </select>
 
-            <!-- Username -->
             <input type="text" name="username" placeholder="Username"
                 class="w-full border p-3 text-base sm:text-xl md:text-2xl rounded mt-4" required>
 
-            <!-- Password -->
             <div class="relative mt-4">
                 <input id="password" type="password" name="password" placeholder="Kata Sandi"
                     class="w-full border p-3 pr-10 text-base sm:text-xl md:text-2xl rounded" required>
 
-                <!-- Toggle icon -->
+                <!-- heroicons -->
                 <span class="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-600"
                     onclick="togglePassword()">
+                    <!-- show -->
                     <svg id="show" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -48,6 +41,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
+
+                    <!-- hide -->
                     <svg id="hide" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -56,9 +51,8 @@
                 </span>
             </div>
 
-            <!-- Tombol Masuk -->
             <button type="submit"
-                class="w-full bg-blue-500 text-white py-3 text-base sm:text-xl md:text-2xl rounded mt-4 hover:bg-blue-600">
+                class="w-full bg-blue-500 text-white py-3 text-base sm:text-xl md:text-2xl rounded mt-4 hover:bg-blue-600 cursor-pointer">
                 Masuk
             </button>
         </form>
