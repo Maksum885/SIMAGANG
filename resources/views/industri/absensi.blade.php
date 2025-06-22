@@ -1,189 +1,395 @@
+{{-- File: resources/views/industri/absensi.blade.php --}}
+
 @extends('layouts.dashboard-industri')
 
 @section('content')
-<div class="text-2xl">
-    <h1 class="font-bold mb-6 underline">Data Absensi</h1>
 
-    <!-- Tabs -->
-    <div class="flex gap-2 mb-4">
-        <button id="btnHarian" onclick="show('harian')" class="px-4 py-2 rounded bg-gray-500 text-white font-semibold">Absensi Harian</button>
-        <button id="btnRekap" onclick="show('rekap')" class="px-4 py-2 rounded bg-blue-500 text-white font-semibold">Rekap Absensi</button>
+    <div class="text-2xl">
 
-    </div>
+        <h1 class="font-bold mb-6 underline">Data Absensi</h1>
 
-    <!-- Rekap Absensi -->
-    <div id="contentRekap" class="space-y-4">
-        <div class="flex flex-col md:flex-row justify-end gap-4">
-            <input type="month" class="border rounded-md px-4 py-2" />
-            <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md flex items-center gap-2">Export</button>
+        <!-- Tabs -->
+
+        <div class="flex gap-2 mb-4">
+
+            <button id="btnHarian" onclick="show('harian')"
+
+                class="px-4 py-2 rounded bg-blue-500 text-white font-semibold">Absensi Harian</button>
+
+            <button id="btnRekap" onclick="show('rekap')"
+
+                class="px-4 py-2 rounded bg-gray-500 text-white font-semibold">Rekap Absensi</button>
+
         </div>
 
-        <div class="bg-white rounded-md shadow">
-            <div class="flex justify-between items-center mx-2 py-2">
-                <input type="text" placeholder="Cari peserta..." class="border px-4 py-2 rounded-md md:w-1/3" />
-                <select class="border px-4 py-2 rounded-md">
-                    <option>Semua Proyek</option>
-                    <option>Proyek A</option>
-                </select>
+        <!-- Absensi Harian -->
+
+        <div id="contentHarian" class="bg-white p-6 rounded shadow">
+
+            <div class="flex justify-between items-center mb-4">
+
+                <h2 class="font-semibold">Absensi Mahasiswa Hari Ini - {{ now()->format('d F Y') }}</h2>
+
+                <div class="text-sm text-gray-600">
+
+                    Total: {{ $absensiHarian->count() }} siswa
+
+                </div>
+
             </div>
 
-            <table class="w-full text-left border-collapse">
-                <thead class="bg-gray-300">
-                    <tr>
-                        <th class="px-4 py-2">Nama Lengkap</th>
-                        <th class="px-4 py-2">Proyek</th>
-                        <th class="px-4 py-2 text-center">Hadir</th>
-                        <th class="px-4 py-2 text-center">Izin</th>
-                        <th class="px-4 py-2 text-center">Sakit</th>
-                        <th class="px-4 py-2 text-center">Alpha</th>
-                        <th class="px-4 py-2">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-t">
-                        <td class="px-4 py-3">Muhammad Ali Maksum</td>
-                        <td class="px-4 py-3">Pengembangan Aplikasi Mobile</td>
-                        <td class="px-4 py-3 text-center">110</td>
-                        <td class="px-4 py-3 text-center">5</td>
-                        <td class="px-4 py-3 text-center">3</td>
-                        <td class="px-4 py-3 text-center">0</td>
-                        <td class="px-4 py-3">
-                            <button onclick="showModal('Detail')" class="text-blue-600 hover:text-blue-800">Detail</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+            <div class="overflow-x-auto">
 
-    <!-- Absensi Harian -->
-    <div id="contentHarian" class="bg-white p-6 rounded shadow hidden">
-        <h2 class=" font-semibold">Absensi Mahasiswa Hari Ini</h2>
-        <table class="w-full text-left border-collapse">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="px-4 py-2 border">Id</th>
-                    <th class="px-4 py-2 border">Nama Lengkap</th>
-                    <th class="px-4 py-2 border">NIM</th>
-                    <th class="px-4 py-2 border">Tanggal</th>
-                    <th class="px-4 py-2 border">Status</th>
-                    <th class="px-4 py-2 border">Keterangan</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="px-4 py-2 border">1</td>
-                    <td class="px-4 py-2 border">Muhammad Ali Maksum</td>
-                    <td class="px-4 py-2 border">3312411079</td>
-                    <td class="px-4 py-2 border">01/08/2025</td>
-                    <td class="px-4 py-2 border">
-                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-md">Hadir</span>
-                    </td>
-                    <td class="px-4 py-2 border">-</td>
-                </tr>
-                <tr>
-                    <td class="px-4 py-2 border">2</td>
-                    <td class="px-4 py-2 border">Nur Alfi Syahrin</td>
-                    <td class="px-4 py-2 border">3312411071</td>
-                    <td class="px-4 py-2 border">01/08/2025</td>
-                    <td class="px-4 py-2 border">
-                        <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-md">Izin</span>
-                    </td>
-                    <td class="px-4 py-2 border">Acara Keluarga</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+                <table class="w-full text-left border-collapse">
 
-<!-- Modal -->
-<div id="modal-Detail" class="fixed inset-0 flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-xl border-2 w-full max-w-5xl p-6 relative shadow-lg">
-        <button onclick="closeModal('modal-absensi')" class="absolute top-2 right-3 text-gray-600 hover:text-red-600 text-2xl cursor-pointer">&times;</button>
+                    <thead class="bg-gray-100">
 
-        <h2 class="underline text-2xl font-semibold mb-4">Detail Absensi - <span id="namaMahasiswa">Muhammad Ali Maksum</span></h2>
+                        <tr>
 
-        <!-- Tabel Absensi -->
-        <div class="overflow-x-auto max-h-[70vh] overflow-y-auto">
-            <table class="w-full border border-gray-300 ">
-                <thead class="bg-gray-100 text-gray-700">
-                    <tr>
-                        <th class="py-2 px-3 border">No</th>
-                        <th class="py-2 px-3 border">Tanggal</th>
-                        <th class="py-2 px-3 border">Hari</th>
-                        <th class="py-2 px-3 border">Status</th>
-                        <th class="py-2 px-3 border">Jam Masuk</th>
-                        <th class="py-2 px-3 border">Jam Keluar</th>
-                        <th class="py-2 px-3 border">Keterangan</th>
-                    </tr>
-                </thead>
-                <tbody id="absensiDetailBody" class="text-center">
-                    <!-- Contoh statis (bisa diganti dinamis dari controller/API) -->
-                    @php
-                    \Carbon\Carbon::setLocale('id');
-                    $tanggalAwal = \Carbon\Carbon::create(2025, 4, 1);
-                    @endphp
+                            <th class="px-4 py-2 border">No</th>
 
-                    @for ($i = 0; $i < 30; $i++)
-                        @php
-                        $tanggal=$tanggalAwal->copy()->addDays($i);
-                        $hari = $tanggal->translatedFormat('l'); // Akan jadi: Senin, Selasa, Rabu, dst
-                        $status = ($i % 6 == 0) ? 'Izin' : 'Hadir';
-                        @endphp
-                        <tr class="{{ $i % 2 == 0 ? 'bg-white' : 'bg-gray-50' }}">
-                            <td class="py-2 px-3 border">{{ $i + 1 }}</td>
-                            <td class="py-2 px-3 border">{{ $tanggal->format('Y-m-d') }}</td>
-                            <td class="py-2 px-3 border">{{ $hari }}</td>
-                            <td class="py-2 px-3 border">{{ $status }}</td>
-                            <td class="py-2 px-3 border">{{ $status === 'Hadir' ? '08:00' : '-' }}</td>
-                            <td class="py-2 px-3 border">{{ $status === 'Hadir' ? '16:00' : '-' }}</td>
-                            <td class="py-2 px-3 border">
-                                {{ $status === 'Izin' ? 'Keperluan keluarga' : '-' }}
-                            </td>
+                            <th class="px-4 py-2 border">Nama Lengkap</th>
+
+                            <th class="px-4 py-2 border">NIS</th>
+
+                            <th class="px-4 py-2 border">Kelas</th>
+
+                            <th class="px-4 py-2 border">Jam Masuk</th>
+
+                            <th class="px-4 py-2 border">Jam Keluar</th>
+
+                            <th class="px-4 py-2 border">Status</th>
+
+                            <th class="px-4 py-2 border">Keterangan</th>
+
                         </tr>
-                        @endfor
 
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+
+                        @forelse($absensiHarian as $index => $absensi)
+
+                            <tr class="{{ $index % 2 == 0 ? 'bg-white' : 'bg-gray-50' }}">
+
+                                <td class="px-4 py-2 border">{{ $index + 1 }}</td>
+
+                                <td class="px-4 py-2 border">{{ $absensi->siswa->user->nama_lengkap }}</td>
+
+                                <td class="px-4 py-2 border">{{ $absensi->siswa->nis }}</td>
+
+                                <td class="px-4 py-2 border">{{ $absensi->siswa->kelas }}</td>
+
+                                <td class="px-4 py-2 border">
+
+                                    {{ $absensi->jam_masuk ? $absensi->jam_masuk->format('H:i') : '-' }}
+
+                                </td>
+
+                                <td class="px-4 py-2 border">
+
+                                    {{ $absensi->jam_keluar ? $absensi->jam_keluar->format('H:i') : '-' }}
+
+                                </td>
+
+                                <td class="px-4 py-2 border">
+
+                                    <span class="px-2 py-1 rounded text-sm {{ $absensi->status_badge }}">
+
+                                        {{ $absensi->status_text }}
+
+                                    </span>
+
+                                </td>
+
+                                <td class="px-4 py-2 border">{{ $absensi->keterangan ?? '-' }}</td>
+
+                            </tr>
+
+                        @empty
+
+                            <tr>
+
+                                <td colspan="8" class="px-4 py-2 border text-center text-gray-500">
+
+                                    Belum ada data absensi hari ini
+
+                                </td>
+
+                            </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
         </div>
-    </div>
-</div>
 
-<!-- JS sesuai permintaan -->
-<script>
-    function show(section) {
-        // Sembunyikan semua konten
-        document.getElementById('contentRekap').classList.add('hidden');
-        document.getElementById('contentHarian').classList.add('hidden');
+        {{-- Bagian Rekap Absensi yang diperbaiki --}}
 
-        // Reset warna semua tombol
-        document.getElementById('btnRekap').classList.remove('bg-blue-500');
-        document.getElementById('btnRekap').classList.add('bg-gray-500');
-        document.getElementById('btnHarian').classList.remove('bg-blue-500');
-        document.getElementById('btnHarian').classList.add('bg-gray-500');
+        <div id="contentRekap" class="space-y-4 hidden">
 
-        // Tampilkan sesuai tab
-        if (section === 'rekap') {
-            document.getElementById('contentRekap').classList.remove('hidden');
-            document.getElementById('btnRekap').classList.remove('bg-gray-500');
-            document.getElementById('btnRekap').classList.add('bg-blue-500');
-        } else if (section === 'harian') {
-            document.getElementById('contentHarian').classList.remove('hidden');
-            document.getElementById('btnHarian').classList.remove('bg-gray-500');
-            document.getElementById('btnHarian').classList.add('bg-blue-500');
-        }
-    }
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
 
-    function showModal(modalId) {
-        document.getElementById(`modal-${modalId}`).classList.remove("hidden");
-    }
+                <div class="flex items-center gap-4">
 
-    function hideModal(modalId) {
-        document.getElementById(`modal-${modalId}`).classList.add("hidden");
-    }
+                    <input type="month" id="filterMonth" class="border rounded-md px-4 py-2"
 
-    // Default tampil rekap
-    show('harian');
-</script>
+                        value="{{ request('month', now()->format('Y-m')) }}" onchange="filterByMonth()">
+
+                    <button onclick="exportData()"
+
+                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md flex items-center gap-2">
+
+                        📊 Export Excel
+
+                    </button>
+
+                </div>
+
+                <div class="text-sm text-gray-600">
+
+                    Periode:
+
+                    {{ \Carbon\Carbon::createFromFormat('Y-m', request('month', now()->format('Y-m')))->format('F Y') }}
+
+                </div>
+
+            </div>
+
+            <div class="bg-white rounded-md shadow">
+
+                <div class="flex justify-between items-center mx-2 py-2">
+
+                    <input type="text" id="searchSiswa" placeholder="Cari siswa..."
+
+                        class="border px-4 py-2 rounded-md md:w-1/3" onkeyup="searchSiswa()">
+
+                </div>
+
+                <div class="overflow-x-auto">
+
+                    <table class="w-full text-left border-collapse" id="rekapTable">
+
+                        <thead class="bg-gray-300">
+
+                            <tr>
+
+                                <th class="px-4 py-2">No</th>
+
+                                <th class="px-4 py-2">Nama Lengkap</th>
+
+                                <th class="px-4 py-2">NIS</th>
+
+                                <th class="px-4 py-2">Kelas</th>
+
+                                <th class="px-4 py-2 text-center">Hadir</th>
+
+                                <th class="px-4 py-2 text-center">Izin</th>
+
+                                <th class="px-4 py-2 text-center">Sakit</th>
+
+                                <th class="px-4 py-2 text-center">Alpha</th>
+
+                                <th class="px-4 py-2 text-center">Total</th>
+
+                                <th class="px-4 py-2">Persentase</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @forelse($rekapAbsensi as $index => $siswa)
+
+                                <tr class="{{ $index % 2 == 0 ? 'bg-white' : 'bg-gray-50' }}">
+
+                                    <td class="px-4 py-2">{{ $index + 1 }}</td>
+
+                                    <td class="px-4 py-2">{{ $siswa->user->nama_lengkap }}</td>
+
+                                    <td class="px-4 py-2">{{ $siswa->nis }}</td>
+
+                                    <td class="px-4 py-2">{{ $siswa->kelas }}</td>
+
+                                    <td class="px-4 py-2 text-center">
+
+                                        {{ $siswa->absensi->where('status', 'hadir')->count() }}
+
+                                    </td>
+
+                                    <td class="px-4 py-2 text-center">
+
+                                        {{ $siswa->absensi->whereIn('status', ['izin_sakit', 'izin_keluarga', 'izin_lainnya'])->count() }}
+
+                                    </td>
+
+                                    <td class="px-4 py-2 text-center">
+
+                                        {{ $siswa->absensi->where('status', 'sakit')->count() }}
+
+                                    </td>
+
+                                    <td class="px-4 py-2 text-center">
+
+                                        {{ $siswa->absensi->where('status', 'alpha')->count() }}
+
+                                    </td>
+
+                                    <td class="px-4 py-2 text-center font-semibold">
+
+                                        {{ $siswa->absensi->count() }}
+
+                                    </td>
+
+                                    <td class="px-4 py-2">
+
+                                        @php
+
+                                            $totalHadir = $siswa->absensi->where('status', 'hadir')->count();
+
+                                            $totalAbsen = $siswa->absensi->count();
+
+                                            $persentase = $totalAbsen > 0 ? round(($totalHadir / $totalAbsen) * 100) : 0;
+
+                                        @endphp
+
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+
+                                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $persentase }}%"></div>
+
+                                        </div>
+
+                                        <span class="text-sm">{{ $persentase }}%</span>
+
+                                    </td>
+
+                                </tr>
+
+                            @empty
+
+                                <tr>
+
+                                    <td colspan="10" class="px-4 py-2 text-center text-gray-500">
+
+                                        Tidak ada data absensi untuk periode ini
+
+                                    </td>
+
+                                </tr>
+
+                            @endforelse
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <script>
+
+            // Fungsi untuk toggle antara tab harian dan rekap
+
+            function show(content) {
+
+                if (content === 'harian') {
+
+                    document.getElementById('contentHarian').classList.remove('hidden');
+
+                    document.getElementById('contentRekap').classList.add('hidden');
+
+                    document.getElementById('btnHarian').classList.add('bg-blue-500');
+
+                    document.getElementById('btnHarian').classList.remove('bg-gray-500');
+
+                    document.getElementById('btnRekap').classList.add('bg-gray-500');
+
+                    document.getElementById('btnRekap').classList.remove('bg-blue-500');
+
+                } else {
+
+                    document.getElementById('contentHarian').classList.add('hidden');
+
+                    document.getElementById('contentRekap').classList.remove('hidden');
+
+                    document.getElementById('btnHarian').classList.add('bg-gray-500');
+
+                    document.getElementById('btnHarian').classList.remove('bg-blue-500');
+
+                    document.getElementById('btnRekap').classList.add('bg-blue-500');
+
+                    document.getElementById('btnRekap').classList.remove('bg-gray-500');
+
+                }
+
+            }
+
+            // Fungsi untuk filter berdasarkan bulan
+
+            function filterByMonth() {
+
+                const month = document.getElementById('filterMonth').value;
+
+                window.location.href = `{{ route('industri.absensi') }}?month=${month}`;
+
+            }
+
+            // Fungsi untuk pencarian siswa
+
+            function searchSiswa() {
+
+                const input = document.getElementById('searchSiswa');
+
+                const filter = input.value.toUpperCase();
+
+                const table = document.getElementById('rekapTable');
+
+                const tr = table.getElementsByTagName('tr');
+
+                for (let i = 1; i < tr.length; i++) {
+
+                    const td = tr[i].getElementsByTagName('td')[1]; // Kolom nama
+
+                    if (td) {
+
+                        const txtValue = td.textContent || td.innerText;
+
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+
+                            tr[i].style.display = '';
+
+                        } else {
+
+                            tr[i].style.display = 'none';
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            // Fungsi untuk export data ke Excel - DIPERBAIKI
+
+            function exportData() {
+
+                const month = document.getElementById('filterMonth').value;
+
+                // Pastikan menggunakan route yang benar sesuai web route Anda
+
+                window.location.href = `{{ route('industri.absensi.export') }}?month=${month}`;
+
+            }
+
+        </script>
 
 @endsection

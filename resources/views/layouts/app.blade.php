@@ -10,7 +10,8 @@
 </head>
 
 <body class="font-sans bg-white">
-    @if (!Request::is('login'))
+
+    @if (!request()->is('login'))
     <header>
         <nav class="fixed w-full transition-all bg-white z-50 py-4 duration-300" id="navbar">
             <div class="mx-auto flex items-center justify-between px-25">
@@ -40,11 +41,12 @@
         @yield('content')
     </main>
 
-    @if (!Request::is('login'))
+    @if (!request()->is('login'))
     <footer class="text-center bg-blue-400 text-white py-6 sm:py-8 md:py-10 text-sm sm:text-base md:text-lg lg:text-2xl">
         © Copyright by <strong>E-PKL SMK N 6 Batam</strong> 2025, All Right Reserved.
     </footer>
     @endif
+
 </body>
 
 </html>

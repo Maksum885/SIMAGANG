@@ -1,16 +1,13 @@
 <?php
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Models\PembimbingIndustri;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 
 class User extends Authenticatable
 {
     use HasFactory;
+
     protected $fillable = [
         'nama_lengkap',
         'username',
@@ -37,6 +34,7 @@ class User extends Authenticatable
     {
         return $this->hasOne(Siswa::class);
     }
+
     public function aspekTeknis()
     {
         return $this->belongsToMany(AspekTeknis::class, 'aspek_teknis_user');

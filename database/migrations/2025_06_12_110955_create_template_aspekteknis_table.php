@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('aspek_teknis', function (Blueprint $table) {
+        Schema::create('template_aspek_teknis', function (Blueprint $table) {
             $table->id();
             $table->string('jurusan');
             $table->text('capaian_pembelajaran');
+            $table->text('elemen');
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('aspek_teknis');
+        Schema::dropIfExists('template_aspek_teknis');
     }
 };

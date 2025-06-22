@@ -12,10 +12,20 @@ class AspekTeknis extends Model
     protected $fillable = [
         'jurusan',
         'capaian_pembelajaran',
-        'elemen'
+        'elemen',
+        'siswa_id',
+        'pembimbing_industri_id'
     ];
-    public function users()
+
+    // Relasi dengan Siswa
+    public function siswa()
     {
-        return $this->belongsToMany(User::class, 'aspek_teknis_user');
+        return $this->belongsTo(Siswa::class);
+    }
+
+    // Relasi dengan Pembimbing Industri
+    public function pembimbingIndustri()
+    {
+        return $this->belongsTo(PembimbingIndustri::class);
     }
 }

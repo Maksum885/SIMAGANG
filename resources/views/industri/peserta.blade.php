@@ -6,43 +6,148 @@
 
     <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-2">
-            <input type="text" placeholder="Cari..." class="border rounded px-3 py-2" />
-        </div>
-
-        <div class="flex items-center gap-2">
-            <button class="flex items-center bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-9 pr-1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 3.75H6.912a2.25 2.25 0 0 0-2.15 1.588L2.35 13.177a2.25 2.25 0 0 0-.1.661V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 0 0-2.15-1.588H15M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013 1.244h3.218a2.25 2.25 0 0 0 2.013-1.244l.256-.512a2.25 2.25 0 0 1 2.013-1.244h3.859M12 3v8.25m0 0-3-3m3 3 3-3" />
-                </svg>
-                Export
-            </button>
+            <input type="text" id="searchInput" placeholder="Cari..." class="border rounded px-3 py-2" />
         </div>
     </div>
 
+    @if(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
 
-    <table class="w-full bg-white rounded shadow ">
-        <thead class="bg-gray-300">
-            <tr>
-                <th class="px-4 py-2 text-left">NIS</th>
-                <th class="px-4 py-2 text-left">Nama Lengkap</th>
-                <th class="px-4 py-2 text-left">Kelas</th>
-                <th class="px-4 py-2 text-left">Jurusan</th>
-                <th class="px-4 py-2 text-left">Email</th>
-                <th class="px-4 py-2 text-left">Kontak</th>
-                <th class="px-4 py-2 text-left">Periode Magang</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="border-b border-gray-300">
-                <td class="px-4 py-2">3312411079</td>
-                <td class="px-4 py-2">Muhammad Ali Maksum</td>
-                <td class="px-4 py-2">12 C</td>
-                <td class="px-4 py-2">Teknik Pemesinan</td>
-                <td class="px-4 py-2">maksum@gmail.com</td>
-                <td class="px-4 py-2">0891234567</td>
-                <td class="px-4 py-2">01/08/2026 - 31/12/2026</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="w-full bg-white rounded shadow" id="siswaTable">
+            <thead class="bg-gray-300">
+                <tr>
+                    <th class="px-4 py-2 text-left">NIS</th>
+                    <th class="px-4 py-2 text-left">Nama Lengkap</th>
+                    <th class="px-4 py-2 text-left">Kelas</th>
+                    <th class="px-4 py-2 text-left">Jurusan</th>
+                    <th class="px-4 py-2 text-left">Email</th>
+                    <th class="px-4 py-2 text-left">Kontak</th>
+                    <th class="px-4 py-2 text-left">Periode Magang</th>
+                    <th class="px-4 py-2 text-left">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($siswa as $item)
+                <tr class="border-b border-gray-300">
+                    <td class="px-4 py-2">{{ $item->nis }}</td>
+                    <td class="px-4 py-2">{{ $item->user->nama_lengkap }}</td>
+                    <td class="px-4 py-2">{{ $item->kelas }}</td>
+                    <td class="px-4 py-2">{{ $item->jurusan }}</td>
+                    <td class="px-4 py-2">{{ $item->email }}</td>
+                    <td class="px-4 py-2">{{ $item->kontak }}</td>
+                    <td class="px-4 py-2">
+                        {{ \Carbon\Carbon::parse($item->periode_mulai)->format('d/m/Y') }} - 
+                        {{ \Carbon\Carbon::parse($item->periode_selesai)->format('d/m/Y') }}
+                    </td>
+                    <td class="px-4 py-2">
+                        <button onclick="showModal('modal-detail-siswa-{{ $item->id }}')" 
+                                class="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">
+                            Detail
+                        </button>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="8" class="px-4 py-2 text-center text-gray-500">Tidak ada data siswa</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<!-- Modal Detail Siswa (Read Only) -->
+@foreach ($siswa as $item)
+<div id="modal-detail-siswa-{{ $item->id }}" class="hidden fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+    <div class="bg-white w-1/2 p-5 rounded-lg border-2 shadow-lg relative">
+        <h2 class="text-2xl font-bold underline mb-4">Detail Data Siswa/i</h2>
+        <div class="p-4 space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">NIS</label>
+                    <div class="w-full border rounded-lg px-3 py-2 bg-gray-50">{{ $item->nis }}</div>
+                </div>
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                    <div class="w-full border rounded-lg px-3 py-2 bg-gray-50">{{ $item->user->nama_lengkap }}</div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">Kelas</label>
+                    <div class="w-full border rounded-lg px-3 py-2 bg-gray-50">{{ $item->kelas }}</div>
+                </div>
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">Jurusan</label>
+                    <div class="w-full border rounded-lg px-3 py-2 bg-gray-50">{{ $item->jurusan }}</div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">Email</label>
+                    <div class="w-full border rounded-lg px-3 py-2 bg-gray-50">{{ $item->email }}</div>
+                </div>
+                <div>
+                    <label class="block font-medium text-gray-700 mb-1">Kontak</label>
+                    <div class="w-full border rounded-lg px-3 py-2 bg-gray-50">{{ $item->kontak }}</div>
+                </div>
+            </div>
+            <div>
+                <label class="block font-medium text-gray-700 mb-1">Periode Magang</label>
+                <div class="flex items-center gap-2">
+                    <div class="w-full border rounded-lg px-3 py-2 bg-gray-50">
+                        {{ \Carbon\Carbon::parse($item->periode_mulai)->format('d/m/Y') }}
+                    </div>
+                    <span>s/d</span>
+                    <div class="w-full border rounded-lg px-3 py-2 bg-gray-50">
+                        {{ \Carbon\Carbon::parse($item->periode_selesai)->format('d/m/Y') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 border-t border-gray-200 flex justify-end">
+            <button type="button" onclick="hideModal('modal-detail-siswa-{{ $item->id }}')" 
+                    class="px-4 py-2 bg-gray-600 text-blue rounded-lg hover:bg-gray-700 cursor-pointer">
+                Tutup
+            </button>
+        </div>
+    </div>
+</div>
+@endforeach
+
+<script>
+function showModal(modalId) {
+    document.getElementById(modalId).classList.remove('hidden');
+}
+
+function hideModal(modalId) {
+    document.getElementById(modalId).classList.add('hidden');
+}
+
+// Search functionality
+document.getElementById('searchInput').addEventListener('keyup', function() {
+    const searchTerm = this.value.toLowerCase();
+    const table = document.getElementById('siswaTable');
+    const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    
+    for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        let found = false;
+        const cells = row.getElementsByTagName('td');
+        
+        for (let j = 0; j < cells.length - 1; j++) { // -1 to exclude action column
+            if (cells[j].textContent.toLowerCase().includes(searchTerm)) {
+                found = true;
+                break;
+            }
+        }
+        
+        row.style.display = found ? '' : 'none';
+    }
+});
+</script>
 @endsection

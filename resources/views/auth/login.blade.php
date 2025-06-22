@@ -3,8 +3,10 @@
 @section('content')
 <section class="flex items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6">
     <div class="w-full max-w-lg space-y-4">
-        <img src="{{ asset('images/LOGOSMKN6BTM.png') }}" class="w-28 lg:w-38 ml-30 lg:ml-42 ">
-        <p class="text-base sm:text-lg md:text-2xl lg:text-3xl text-center text-gray-700 mb-6 sm:mb-10">E-PKL SMK N 6 BATAM</p>
+        <img src="{{ asset('images/LOGOSMKN6BTM.png') }}" class="w-28 lg:w-38 mx-auto">
+        <p class="text-base sm:text-lg md:text-2xl lg:text-3xl text-center text-gray-700 mb-6 sm:mb-10">
+            E-PKL SMK N 6 BATAM
+        </p>
 
         @if (session('error'))
         <div class="mb-4 text-sm text-red-600 bg-red-100 border border-red-400 p-3 rounded">
@@ -12,10 +14,8 @@
         </div>
         @endif
 
-
         <form method="POST" action="{{ route('login') }}">
             @csrf
-            <!-- pilih role -->
             <select name="role" class="w-full border p-3 text-base sm:text-xl md:text-2xl rounded">
                 <option value="admin">Admin</option>
                 <option value="pembimbing_industri">Pembimbing Industri</option>
@@ -30,23 +30,16 @@
                 <input id="password" type="password" name="password" placeholder="Kata Sandi"
                     class="w-full border p-3 pr-10 text-base sm:text-xl md:text-2xl rounded" required>
 
-                <!-- heroicons -->
                 <span class="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-600"
                     onclick="togglePassword()">
-                    <!-- show -->
-                    <svg id="show" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                    <!-- Ikon tunggal (mata buka/tutup) -->
+                    <svg id="toggleIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        <path id="togglePath1" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-
-                    <!-- hide -->
-                    <svg id="hide" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a10.05 10.05 0 012.387-4.368M6.423 6.423A9.969 9.969 0 0112 5c4.478 0 8.268 2.943 9.542 7a9.953 9.953 0 01-4.125 5.192M15 12a3 3 0 11-6 0 3 3 0 016 0zM3 3l18 18" />
+                        <path id="togglePath2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 
+                            4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                 </span>
             </div>
@@ -62,17 +55,26 @@
 <script>
     function togglePassword() {
         const password = document.getElementById("password");
-        const show = document.getElementById("show");
-        const hide = document.getElementById("hide");
+        const toggleIcon = document.getElementById("toggleIcon");
 
         if (password.type === "password") {
             password.type = "text";
-            show.classList.add("hidden");
-            hide.classList.remove("hidden");
+            toggleIcon.innerHTML = `
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7
+                    a10.05 10.05 0 012.387-4.368M6.423 6.423A9.969 9.969 0 0112 5c4.478 0 
+                    8.268 2.943 9.542 7a9.953 9.953 0 01-4.125 5.192M15 12a3 3 0 11-6 0 
+                    3 3 0 016 0zM3 3l18 18" />
+            `;
         } else {
             password.type = "password";
-            show.classList.remove("hidden");
-            hide.classList.add("hidden");
+            toggleIcon.innerHTML = `
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 
+                    9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            `;
         }
     }
 </script>
