@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Siswa;
+use App\Models\Jurusan;
 use Illuminate\Support\Facades\Hash;
 
 class SiswaController extends Controller
@@ -13,7 +14,8 @@ class SiswaController extends Controller
     public function index()
     {
         $murid = Siswa::with('user')->get();
-        return view('admin.pengguna', compact('murid'));
+        $jurusan = Jurusan::all();
+        return view('admin.pengguna', compact('murid', 'jurusan'));
     }
 
     public function store(Request $request)

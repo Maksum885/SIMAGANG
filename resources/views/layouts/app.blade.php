@@ -13,10 +13,10 @@
 
     @if (!request()->is('login'))
     <header>
-        <nav class="fixed w-full transition-all bg-white z-50 py-4 duration-300" id="navbar">
-            <div class="mx-auto flex items-center justify-between px-25">
-                <img src="{{ asset('images/LOGOSMKN6BTM.png') }}" class="w-16 sm:w-24">
-                <div class="hidden lg:inline space-x-15 font-medium text-2xl">
+        <nav class="fixed w-full transition-all bg-white z-50 duration-300" id="navbar">
+            <div class="mx-auto flex items-center justify-between px-20">
+                <img src="{{ asset('images/LOGOSMKN6BTM.png') }}" class="w-12 sm:w-16">
+                <div class="hidden lg:inline space-x-15 font-medium text-lg">
                     <a href="#beranda" class="hover:text-sky-500 opacity-90">Beranda</a>
                     <a href="#tentang" class="hover:text-sky-500 opacity-90">Tentang Kami</a>
                     <a href="#kontak" class="hover:text-sky-500 opacity-90">Kontak</a>
@@ -42,7 +42,7 @@
     </main>
 
     @if (!request()->is('login'))
-    <footer class="text-center bg-blue-400 text-white py-6 sm:py-8 md:py-10 text-sm sm:text-base md:text-lg lg:text-2xl">
+    <footer class="text-center bg-blue-400 text-white py-4 sm:py-5 md:py-6 text-sm sm:text-base md:text-md lg:text-lg">
         © Copyright by <strong>E-PKL SMK N 6 Batam</strong> 2025, All Right Reserved.
     </footer>
     @endif

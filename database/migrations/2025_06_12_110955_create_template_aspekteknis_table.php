@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('template_aspek_teknis', function (Blueprint $table) {
-            $table->id();
-            $table->string('jurusan');
-            $table->text('capaian_pembelajaran');
-            $table->text('elemen');
-            $table->timestamps();
-        });
+        // Schema::create('template_aspek_teknis', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('jurusan');
+        //     $table->text('capaian_pembelajaran');
+        //     $table->text('elemen');
+        //     $table->timestamps();
+        // });
     }
 
     /**

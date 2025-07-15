@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -30,7 +31,6 @@ class PembimbingIndustri extends Model
         return $this->hasMany(AspekTeknis::class);
     }
 
-    // TAMBAHKAN RELASI KE SISWA
     public function siswa(): HasMany
     {
         return $this->hasMany(Siswa::class);
@@ -39,7 +39,7 @@ class PembimbingIndustri extends Model
     // TAMBAHKAN METHOD UNTUK MENDAPATKAN ABSENSI SISWA
     public function getAbsensiSiswa($bulan = null, $tahun = null)
     {
-        $query = Absensi::whereHas('siswa', function($q) {
+        $query = Absensi::whereHas('siswa', function ($q) {
             $q->where('pembimbing_industri_id', $this->id);
         });
 
@@ -49,6 +49,7 @@ class PembimbingIndustri extends Model
 
         return $query->with(['siswa.user'])->get();
     }
+    
     public function getPenilaianSiswa()
     {
         return $this->hasMany(Penilaian::class, 'pembimbing_industri_id');
@@ -58,6 +59,4 @@ class PembimbingIndustri extends Model
     {
         return $this->hasMany(Sertifikat::class, 'pembimbing_industri_id');
     }
-    
-
 }

@@ -1,51 +1,49 @@
 @extends('layouts.dashboard-guru')
 
 @section('content')
-<div class="p-5 text-2xl">
-    <h1 class="text-4xl font-bold mb-6 underline">Data Peserta Magang</h1>
+<div class="text-md">
+    <h1 class="text-2xl font-bold mb-5 underline">Data Siswa/i</h1>
 
     <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center gap-2">
-            <input type="text" id="searchInput" placeholder="Cari Peserta..." class="border rounded px-3 py-2" />
-        </div>
+        <input type="text" id="searchInput" placeholder="Cari..." class="border px-2 py-1 rounded" />
     </div>
 
     @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            {{ session('success') }}
-        </div>
+    <div class="bg-green-100 border border-green-400 text-green-700 px-2 py-2 rounded mb-4">
+        {{ session('success') }}
+    </div>
     @endif
 
     <div class="overflow-x-auto">
-        <table class="w-full bg-white rounded shadow" id="siswaTable">
+        <table class="w-full bg-white rounded shadow text-left" id="siswaTable">
             <thead class="bg-gray-300">
                 <tr>
-                    <th class="px-4 py-2 text-left">NIS</th>
-                    <th class="px-4 py-2 text-left">Nama</th>
-                    <th class="px-4 py-2 text-left">Kelas</th>
-                    <th class="px-4 py-2 text-left">Jurusan</th>
-                    <th class="px-4 py-2 text-left">Email</th>
-                    <th class="px-4 py-2 text-left">Kontak</th>
-                    <th class="px-4 py-2 text-left">Periode Magang</th>
-                    <th class="px-4 py-2 text-left">Aksi</th>
+                    <th class="px-4 py-1 text-left">NIS</th>
+                    <th class="px-4 py-1 text-left">Nama Lengkap</th>
+                    <th class="px-4 py-1 text-left">Kelas</th>
+                    <th class="px-4 py-1 text-left">Jurusan</th>
+                    <th class="px-4 py-1 text-left">Email</th>
+                    <th class="px-4 py-1 text-left">Kontak</th>
+                    <th class="px-4 py-1 text-left">Periode Magang</th>
+                    <th class="px-4 py-1 text-left">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($siswa as $item)
                 <tr class="border-b border-gray-300">
-                    <td class="px-4 py-2">{{ $item->nis }}</td>
-                    <td class="px-4 py-2">{{ $item->user->nama_lengkap }}</td>
-                    <td class="px-4 py-2">{{ $item->kelas }}</td>
-                    <td class="px-4 py-2">{{ $item->jurusan }}</td>
-                    <td class="px-4 py-2">{{ $item->email }}</td>
-                    <td class="px-4 py-2">{{ $item->kontak }}</td>
-                    <td class="px-4 py-2">
-                        {{ \Carbon\Carbon::parse($item->periode_mulai)->format('d/m/Y') }} - 
+                    <td class="px-4 py-1">{{ $item->nis }}</td>
+                    <td class="px-4 py-1">{{ $item->user->nama_lengkap }}</td>
+                    <td class="px-4 py-1">{{ $item->kelas }}</td>
+                    <td class="px-4 py-1">{{ $item->jurusan }}</td>
+                    <td class="px-4 py-1">{{ $item->email }}</td>
+                    <td class="px-4 py-1">{{ $item->kontak }}</td>
+                    <td class="px-4 py-1">
+                        {{ \Carbon\Carbon::parse($item->periode_mulai)->format('d/m/Y') }} -
                         {{ \Carbon\Carbon::parse($item->periode_selesai)->format('d/m/Y') }}
                     </td>
-                    <td class="px-4 py-2">
-                        <button onclick="showModal('modal-detail-siswa-{{ $item->id }}')" 
-                                class="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">
+                    <td class="px-4 py-1">
+                        <button onclick="showModal('modal-detail-siswa-{{ $item->id }}')"
+                            class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white px-2 py-1 rounded text-sm">
                             Detail
                         </button>
                     </td>
@@ -62,9 +60,9 @@
 
 <!-- Modal Detail Siswa (Read Only) -->
 @foreach ($siswa as $item)
-<div id="modal-detail-siswa-{{ $item->id }}" class="hidden fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+<div id="modal-detail-siswa-{{ $item->id }}" class="hidden fixed inset-0 flex items-center justify-center z-50">
     <div class="bg-white w-1/2 p-5 rounded-lg border-2 shadow-lg relative">
-        <h2 class="text-2xl font-bold underline mb-4">Detail Data Siswa/i</h2>
+        <h2 class="text-xl font-medium underline mb-1">Detail Data Siswa/i</h2>
         <div class="p-4 space-y-4">
             <div class="grid grid-cols-2 gap-4">
                 <div>
@@ -110,8 +108,8 @@
             </div>
         </div>
         <div class="p-4 border-t border-gray-200 flex justify-end">
-            <button type="button" onclick="hideModal('modal-detail-siswa-{{ $item->id }}')" 
-                    class="px-4 py-2 bg-gray-600 text-blue rounded-lg hover:bg-gray-700 cursor-pointer">
+            <button type="button" onclick="hideModal('modal-detail-siswa-{{ $item->id }}')"
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer">
                 Tutup
             </button>
         </div>
@@ -120,34 +118,34 @@
 @endforeach
 
 <script>
-function showModal(modalId) {
-    document.getElementById(modalId).classList.remove('hidden');
-}
-
-function hideModal(modalId) {
-    document.getElementById(modalId).classList.add('hidden');
-}
-
-// Search functionality
-document.getElementById('searchInput').addEventListener('keyup', function() {
-    const searchTerm = this.value.toLowerCase();
-    const table = document.getElementById('siswaTable');
-    const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-    
-    for (let i = 0; i < rows.length; i++) {
-        const row = rows[i];
-        let found = false;
-        const cells = row.getElementsByTagName('td');
-        
-        for (let j = 0; j < cells.length - 1; j++) { // -1 to exclude action column
-            if (cells[j].textContent.toLowerCase().includes(searchTerm)) {
-                found = true;
-                break;
-            }
-        }
-        
-        row.style.display = found ? '' : 'none';
+    function showModal(modalId) {
+        document.getElementById(modalId).classList.remove('hidden');
     }
-});
+
+    function hideModal(modalId) {
+        document.getElementById(modalId).classList.add('hidden');
+    }
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        const searchTerm = this.value.toLowerCase();
+        const table = document.getElementById('siswaTable');
+        const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            let found = false;
+            const cells = row.getElementsByTagName('td');
+
+            for (let j = 0; j < cells.length - 1; j++) { // -1 to exclude action column
+                if (cells[j].textContent.toLowerCase().includes(searchTerm)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            row.style.display = found ? '' : 'none';
+        }
+    });
 </script>
 @endsection

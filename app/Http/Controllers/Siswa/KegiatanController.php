@@ -8,20 +8,22 @@ use App\Models\Kegiatan;
 use App\Models\Siswa;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class KegiatanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $semua = $request->query('all');
         $siswa = Siswa::where('user_id', Auth::id())->first();
-        
+
         if (!$siswa) {
             return redirect()->back()->with('error', 'Data siswa tidak ditemukan');
         }
 
-        $kegiatans = Kegiatan::where('siswa_id', $siswa->id)
-            ->orderBy('tanggal', 'desc')
-            ->get();
+        $kegiatanQuery = Kegiatan::where('siswa_id', $siswa->id)->orderByDesc('tanggal');
+
+        $kegiatans = $semua ? $kegiatanQuery->get() : $kegiatanQuery->take(1)->get();
 
         return view('siswa.kegiatan', compact('kegiatans'));
     }
@@ -35,7 +37,7 @@ class KegiatanController extends Controller
         ]);
 
         $siswa = Siswa::where('user_id', Auth::id())->first();
-        
+
         if (!$siswa) {
             return redirect()->back()->with('error', 'Data siswa tidak ditemukan');
         }
@@ -58,5 +60,14 @@ class KegiatanController extends Controller
         Kegiatan::create($data);
 
         return redirect()->route('siswa.kegiatan')->with('success', 'Kegiatan berhasil disimpan');
+    }
+    public function export()
+    {
+        $siswa = auth()->user()->siswa;
+        $kegiatans = Kegiatan::where('siswa_id', $siswa->id)->orderBy('tanggal')->get();
+
+
+        $pdf = Pdf::loadView('siswa.kegiatan-pdf', compact('siswa', 'kegiatans'));
+        return $pdf->download('rekapan_kegiatan_pkl_' . now()->format('Ymd') . '.pdf');
     }
 }

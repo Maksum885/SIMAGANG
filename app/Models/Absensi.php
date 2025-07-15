@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -7,20 +8,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Absensi extends Model
 {
     protected $table = 'absensi';
-    
+
     protected $fillable = [
         'siswa_id',
         'tanggal',
-        'jam_masuk',
-        'jam_keluar',
+        'jam_absen',
         'status',
-        'keterangan'
+        'keterangan',
+        'lokasi',
+        'foto'
     ];
 
     protected $casts = [
         'tanggal' => 'date',
-        'jam_masuk' => 'datetime:H:i',
-        'jam_keluar' => 'datetime:H:i'
+        'jam_absen' => 'datetime:H:i:s'
     ];
 
     public function siswa(): BelongsTo
@@ -38,7 +39,7 @@ class Absensi extends Model
             'izin_lainnya' => 'bg-yellow-100 text-yellow-700',
             'alpha' => 'bg-red-100 text-red-700'
         ];
-        
+
         return $badges[$this->status] ?? 'bg-gray-100 text-gray-700';
     }
 
@@ -51,7 +52,7 @@ class Absensi extends Model
             'izin_lainnya' => 'Izin Lainnya',
             'alpha' => 'Alpha'
         ];
-        
+
         return $texts[$this->status] ?? 'Unknown';
     }
 }

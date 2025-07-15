@@ -25,7 +25,6 @@ class BerandaController extends Controller
             'jumlahPembimbingIndustri',
             'jumlahGuruPembimbing',
             'jumlahSiswa',
-            'aktivitas'
         ));
     }
 }

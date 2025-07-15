@@ -15,23 +15,48 @@ class KehadiranController extends Controller
     public function index(Request $request)
     {
         $today = Carbon::today();
+        $now = Carbon::now(); // waktu saat ini
+        $batasAbsen = Carbon::createFromTime(17, 0, 0); //  batas absen jam 17:00 
 
-        // Dapatkan pembimbing industri yang sedang login
         $pembimbingIndustri = Auth::user()->pembimbingIndustri;
 
-        // Ambil bulan dari request atau gunakan bulan saat ini
+        // Ambil bulan dari request atau bulan saat ini
         $month = $request->input('month', Carbon::now()->format('Y-m'));
         $monthCarbon = Carbon::createFromFormat('Y-m', $month);
 
-        // Data absensi harian - HANYA SISWA YANG DIBIMBING
-        $absensiHarian = Absensi::with(['siswa.user'])
-            ->whereHas('siswa', function ($query) use ($pembimbingIndustri) {
-                $query->where('pembimbing_industri_id', $pembimbingIndustri->id);
-            })
-            ->where('tanggal', $today)
-            ->get();
+        //  Ambil semua siswa bimbingan
+        $siswaList = Siswa::where('pembimbing_industri_id', $pembimbingIndustri->id)->get();
 
-        // Data rekap absensi bulanan - HANYA SISWA YANG DIBIMBING
+        if ($now->greaterThanOrEqualTo($batasAbsen)) {
+            foreach ($siswaList as $siswa) {
+                $sudahAbsen = Absensi::where('siswa_id', $siswa->id)
+                    ->whereDate('tanggal', $today)
+                    ->exists();
+
+                if (!$sudahAbsen) {
+                    Absensi::create([
+                        'siswa_id' => $siswa->id,
+                        'tanggal' => $today,
+                        'status' => 'alpha',
+                        'keterangan' => 'Tidak melakukan absen',
+                        'jam_absen' => null,
+                        'lokasi' => null,
+                        'foto' =>  null
+                    ]);
+                }
+            }
+        }
+
+        // Data absensi harian
+        $absensiHarian = Siswa::with([
+            'user',
+            'absensi' => function ($query) use ($today) {
+                $query->whereDate('tanggal', $today);
+            }
+        ])->where('pembimbing_industri_id', $pembimbingIndustri->id)->get();
+
+
+        // Data rekap bulanan
         $rekapAbsensi = Siswa::with([
             'user',
             'absensi' => function ($query) use ($monthCarbon) {
@@ -45,27 +70,47 @@ class KehadiranController extends Controller
         return view('industri.absensi', compact('absensiHarian', 'rekapAbsensi'));
     }
 
+
     public function detail($siswaId)
     {
         $pembimbingIndustri = Auth::user()->pembimbingIndustri;
 
-        // Pastikan siswa adalah bimbingan dari pembimbing yang login
         $siswa = Siswa::with('user')
             ->where('id', $siswaId)
             ->where('pembimbing_industri_id', $pembimbingIndustri->id)
             ->firstOrFail();
 
-        $currentMonth = Carbon::now();
+        $month = request('month', now()->format('Y-m'));
+        $monthCarbon = Carbon::createFromFormat('Y-m', $month);
 
-        $detailAbsensi = Absensi::where('siswa_id', $siswaId)
-            ->whereMonth('tanggal', $currentMonth->month)
-            ->whereYear('tanggal', $currentMonth->year)
-            ->orderBy('tanggal', 'asc')
-            ->get();
+        $absenList = Absensi::where('siswa_id', $siswaId)
+            ->whereMonth('tanggal', $monthCarbon->month)
+            ->whereYear('tanggal', $monthCarbon->year)
+            ->get()
+            ->keyBy(fn($absen) => $absen->tanggal->format('Y-m-d'));
+
+        $dates = collect();
+
+        $start = $monthCarbon->copy()->startOfMonth();
+        $end = $monthCarbon->copy()->endOfMonth();
+        $limit = Carbon::today()->lessThan($end) ? Carbon::today() : $end;
+
+        for ($date = $start->copy(); $date <= $limit; $date->addDay()) {
+            $absen = $absenList[$date->format('Y-m-d')] ?? null;
+            $dates->push([
+                'tanggal' => $date->toDateString(),
+                'hari' => $date->isoFormat('dddd'),
+                'status' => $absen->status ?? 'alpha',
+                'keterangan' => $absen->keterangan ?? '-',
+                'lokasi' => $absen->lokasi ?? null,
+                'foto' => $absen->foto ?? null,
+            ]);
+        }
+
 
         return response()->json([
             'siswa' => $siswa,
-            'absensi' => $detailAbsensi
+            'detail' => $dates
         ]);
     }
 
@@ -75,7 +120,7 @@ class KehadiranController extends Controller
 
         try {
             $month = $request->input('month', Carbon::now()->format('Y-m'));
-            
+
             if (!preg_match('/^\d{4}-\d{2}$/', $month)) {
                 throw new \Exception("Format bulan tidak valid");
             }
@@ -97,9 +142,9 @@ class KehadiranController extends Controller
             ->get();
 
         // Buat nama file
-        $filename = 'Rekap_Absensi_' . $monthCarbon->format('F_Y') . '_' . 
-                   str_replace(' ', '_', $pembimbingIndustri->user->nama_lengkap) . '_' . 
-                   date('Y-m-d') . '.csv';
+        $filename = 'Rekap_Absensi_' . $monthCarbon->format('F_Y') . '_' .
+            str_replace(' ', '_', $pembimbingIndustri->user->nama_lengkap) . '_' .
+            date('Y-m-d') . '.csv';
 
         $headers = [
             'Content-Type' => 'text/csv',
@@ -108,8 +153,8 @@ class KehadiranController extends Controller
 
         $callback = function () use ($data, $monthCarbon) {
             $file = fopen('php://output', 'w');
-            
-            // Header CSV
+
+            // Header CSV (pakai delimiter titik koma)
             fputcsv($file, [
                 'No',
                 'Nama Lengkap',
@@ -122,9 +167,9 @@ class KehadiranController extends Controller
                 'Total Absensi',
                 'Persentase Kehadiran (%)',
                 'Periode'
-            ]);
+            ], ';');
 
-            // Data
+            // Isi data
             foreach ($data as $index => $siswa) {
                 $totalHadir = $siswa->absensi->where('status', 'hadir')->count();
                 $totalIzin = $siswa->absensi->whereIn('status', ['izin_sakit', 'izin_keluarga', 'izin_lainnya'])->count();
@@ -145,7 +190,7 @@ class KehadiranController extends Controller
                     $totalAbsensi,
                     $persentase,
                     $monthCarbon->format('F Y')
-                ]);
+                ], ';');
             }
 
             fclose($file);

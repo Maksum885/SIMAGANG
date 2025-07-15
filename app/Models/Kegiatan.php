@@ -29,7 +29,7 @@ class Kegiatan extends Model
 
     public function getStatusColorAttribute()
     {
-        return match($this->status) {
+        return match ($this->status) {
             'menunggu' => 'text-yellow-600',
             'disetujui' => 'text-green-600',
             'ditolak' => 'text-red-600',
@@ -39,7 +39,7 @@ class Kegiatan extends Model
 
     public function getStatusTextAttribute()
     {
-        return match($this->status) {
+        return match ($this->status) {
             'menunggu' => 'Menunggu Verifikasi',
             'disetujui' => 'Terverifikasi',
             'ditolak' => 'Ditolak',

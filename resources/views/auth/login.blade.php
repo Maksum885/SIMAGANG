@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="flex items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6">
-    <div class="w-full max-w-lg space-y-4">
-        <img src="{{ asset('images/LOGOSMKN6BTM.png') }}" class="w-28 lg:w-38 mx-auto">
-        <p class="text-base sm:text-lg md:text-2xl lg:text-3xl text-center text-gray-700 mb-6 sm:mb-10">
+<section class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-sm space-y-4">
+        <img src="{{ asset('images/LOGOSMKN6BTM.png') }}" class="w-14 lg:w-28 mx-auto">
+        <p class="text-base sm:text-md md:text-lg lg:text-xl text-center text-gray-700 mb-6 sm:mb-8">
             E-PKL SMK N 6 BATAM
         </p>
 
@@ -16,21 +16,22 @@
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
-            <select name="role" class="w-full border p-3 text-base sm:text-xl md:text-2xl rounded">
+            <select name="role" class="w-full border p-2 text-base sm:text-sm md:text-md rounded">
+                <option disabled selected hidden>Pilih Jenis User</option>
                 <option value="admin">Admin</option>
                 <option value="pembimbing_industri">Pembimbing Industri</option>
                 <option value="guru_pembimbing">Guru Pembimbing</option>
                 <option value="siswa">Siswa</option>
             </select>
 
-            <input type="text" name="username" placeholder="Username"
-                class="w-full border p-3 text-base sm:text-xl md:text-2xl rounded mt-4" required>
+            <input type="text" name="username" placeholder="Nama Pengguna"
+                class="w-full border p-2 text-base sm:text-sm md:text-md rounded mt-3" required>
 
-            <div class="relative mt-4">
+            <div class="relative mt-3">
                 <input id="password" type="password" name="password" placeholder="Kata Sandi"
-                    class="w-full border p-3 pr-10 text-base sm:text-xl md:text-2xl rounded" required>
+                    class="w-full border p-2 text-base sm:text-sm md:text-md rounded" required>
 
-                <span class="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-600"
+                <span class="absolute inset-y-0 right-4 flex items-center cursor-pointer text-gray-600"
                     onclick="togglePassword()">
                     <!-- Ikon tunggal (mata buka/tutup) -->
                     <svg id="toggleIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
@@ -45,7 +46,7 @@
             </div>
 
             <button type="submit"
-                class="w-full bg-blue-500 text-white py-3 text-base sm:text-xl md:text-2xl rounded mt-4 hover:bg-blue-600 cursor-pointer">
+                class="w-full bg-blue-500 text-white py-2 text-base sm:text-md md:text-lg rounded mt-4 hover:bg-blue-600 cursor-pointer">
                 Masuk
             </button>
         </form>

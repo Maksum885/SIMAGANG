@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\GuruPembimbing;
+use App\Models\Jurusan;
 use Illuminate\Support\Facades\Hash;
 
 class GuruPembimbingController extends Controller
@@ -13,7 +14,8 @@ class GuruPembimbingController extends Controller
     public function index()
     {
         $gurpem = GuruPembimbing::with('user')->get();
-        return view('admin.pengguna', compact('gurpem'));
+        $jurusan = Jurusan::all();
+        return view('admin.pengguna', compact('gurpem', 'jurusan'));
     }
 
     public function store(Request $request)

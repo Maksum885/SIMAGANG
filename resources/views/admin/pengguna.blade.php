@@ -1,169 +1,176 @@
 @extends('layouts.dashboard-admin')
 
 @section('content')
-<div class="text-2xl">
-    <h1 class="text-4xl font-bold mb-7 underline">Data PembimbingIndustri</h1>
+<div class="text-md">
+    <h1 class="text-2xl font-bold mb-5 underline">Data Pengguna</h1>
     @if (session('success'))
-    <div id="alert-success" class="mb-5 px-4 py-3 rounded bg-green-500 text-white flex justify-between items-center text-xl">
+    <div id="alert-success" class="mb-4 px-2 py-2 rounded bg-green-500 text-white flex justify-between items-center text-md">
         <span>{{ session('success') }}</span>
-        <button onclick="document.getElementById('alert-success').remove()" class="ml-4 text-white hover:text-gray-200 text-2xl font-bold">&times;</button>
+        <button onclick="document.getElementById('alert-success').remove()" class="ml-4 text-white hover:text-gray-200 text-md font-bold">&times;</button>
     </div>
     @endif
 
     @if (session('error'))
-    <div id="alert-error" class="mb-5 px-4 py-3 rounded bg-red-500 text-white flex justify-between items-center text-xl">
+    <div id="alert-error" class="mb-4 px-2 py-2 rounded bg-red-500 text-white flex justify-between items-center text-md">
         <span>{{ session('error') }}</span>
-        <button onclick="document.getElementById('alert-error').remove()" class="ml-4 text-white hover:text-gray-200 text-2xl font-bold">&times;</button>
+        <button onclick="document.getElementById('alert-error').remove()" class="ml-4 text-white hover:text-gray-200 text-md font-bold">&times;</button>
     </div>
     @endif
 
-    <div class="mb-7 flex space-x-3">
-        <button id="btnPembimbing_industri" onclick="show('pembimbing_industri')" class="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">Pembimbing Industri</button>
-        <button id="btnGuruPembimbing" onclick="show('gurupembimbing')" class="bg-gray-500 text-white px-4 py-2 rounded cursor-pointer">Guru Pembimbing</button>
-        <button id="btnSiswa" onclick="show('siswa')" class="bg-gray-500 text-white px-4 py-2 rounded cursor-pointer">Siswa/i</button>
+    <div class="mb-5 flex space-x-3 font-medium">
+        <button id="btnPembimbing_industri" onclick="show('pembimbing_industri')" class="bg-blue-500 text-white px-2 py-2 rounded cursor-pointer">Pembimbing Industri</button>
+        <button id="btnGuruPembimbing" onclick="show('gurupembimbing')" class="bg-gray-500 text-white px-2 py-2 rounded cursor-pointer">Guru Pembimbing</button>
+        <button id="btnSiswa" onclick="show('siswa')" class="bg-gray-500 text-white px-2 py-2 rounded cursor-pointer">Siswa/i</button>
     </div>
 
 
     <!-- pembimbing industri -->
     <div id="contentPembimbing_industri" class="hidden">
-        <div class="flex justify-between mb-7">
-            <input type="text" placeholder="Cari..." class="border px-2 py-1 rounded w-1/3">
+        <div class="flex justify-between mb-5">
+            <input type="text" placeholder="Cari..." class="border px-2 py-1 rounded w-1/3 cariInput">
         </div>
 
-        <table class="w-full bg-white rounded shadow text-left">
-            <thead class="bg-gray-300">
-                <tr>
-                    <th class="px-4 py-2 text-left">Nama Pembimbing</th>
-                    <th class="px-4 py-2 text-left">Nama Industri</th>
-                    <th class="px-4 py-2 text-left">Bidang</th>
-                    <th class="px-4 py-2 text-left">Alamat</th>
-                    <th class="px-4 py-2 text-left">Kontak</th>
-                    <th class="px-4 py-2 text-left">Nama Pimpinan</th>
-                    <th class="px-4 py-2 text-left">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($pembimbingIndustri as $item)
-                <tr class="border-b border-gray-300">
-                    <td class="px-4 py-2 text-left">{{ $item->user->nama_lengkap }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->nama_industri }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->bidang_industri }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->alamat }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->kontak }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->nama_pimpinan }}</td>
-                    <td class="px-4 py-2 text-left space-x-2 flex">
-                        <button
-                            class="flex items-center px-2 bg-blue-200 text-blue-500 rounded hover:bg-blue-300 cursor-pointer"
-                            onclick="showModal('modal-edit-pembimbingindustri-{{ $item->id }}')">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                            </svg>
-                        </button>
-                        <button onclick="showModal('modal-hapus-pembimbingindustri-{{ $item->id }}')" class="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                            </svg>
-                        </button>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="overflow-x-auto text-md">
+            <table class="min-w-[640px] w-full bg-white rounded shadow text-left table-filter pembimbing-industri">
+                <thead class="bg-gray-300">
+                    <tr>
+                        <th class="px-4 py-1 text-left">Nama Pembimbing</th>
+                        <th class="px-4 py-1 text-left">Nama Industri</th>
+                        <th class="px-4 py-1 text-left">Bidang</th>
+                        <th class="px-4 py-1 text-left">Alamat</th>
+                        <th class="px-4 py-1 text-left">Kontak</th>
+                        <th class="px-4 py-1 text-left">Nama Pimpinan</th>
+                        <th class="px-4 py-1 text-left">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($pembimbingIndustri as $item)
+                    <tr class="border-b border-gray-300">
+                        <td class="px-4 py-1 text-left">{{ $item->user->nama_lengkap }}</td>
+                        <td class="px-4 py-1 text-left">{{ $item->nama_industri }}</td>
+                        <td class="px-4 py-1 text-left">{{ $item->bidang_industri }}</td>
+                        <td class="px-4 py-1 text-left">{{ $item->alamat }}</td>
+                        <td class="px-4 py-1 text-left">{{ $item->kontak }}</td>
+                        <td class="px-4 py-1 text-left">{{ $item->nama_pimpinan }}</td>
+                        <td class="px-4 py-1 text-left space-x-2 flex">
+                            <button
+                                class="flex items-center px-2 bg-blue-200 text-blue-500 rounded hover:bg-blue-300 cursor-pointer"
+                                onclick="showModal('modal-edit-pembimbingindustri-{{ $item->id }}')">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                </svg>
+                            </button>
+                            <button onclick="showModal('modal-hapus-pembimbingindustri-{{ $item->id }}')" class="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 
 
     <!-- guru pembimbing -->
     <div id="contentGuruPembimbing" class="hidden">
-        <div class="flex justify-between mb-7">
-            <input type="text" placeholder="Cari..." class="border px-2 py-1 rounded w-1/3">
+        <div class="flex justify-between mb-5">
+            <input type="text" placeholder="Cari..." class="border px-2 py-1 rounded w-1/3 cariInput">
         </div>
 
-        <table class="w-full bg-white rounded shadow text-left">
-            <thead class="bg-gray-300">
-                <tr>
-                    <th class="px-4 py-2 text-left">NIP</th>
-                    <th class="px-4 py-2 text-left">Nama Lengkap</th>
-                    <th class="px-4 py-2 text-left">Jurusan</th>
-                    <th class="px-4 py-2 text-left">Email</th>
-                    <th class="px-4 py-2 text-left">Kontak</th>
-                    <th class="px-4 py-2 text-left">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($guruPembimbing as $item)
-                <tr class="border-b border-gray-300">
-                    <td class="px-4 py-2 text-left">{{ $item->nip }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->user->nama_lengkap }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->jurusan }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->email }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->kontak }}</td>
-                    <td class="px-4 py-2 text-left space-x-2 flex">
-                        <button
-                            class="flex items-center px-2 bg-blue-200 text-blue-500 rounded hover:bg-blue-300 cursor-pointer"
-                            onclick="showModal('modal-edit-gurupembimbing-{{ $item->id }}')">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                            </svg>
-                        </button>
-                        <button
-                            onclick="showModal('modal-hapus-gurupembimbing-{{ $item->id }}')" class="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                            </svg>
-                        </button>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="overflow-x-auto">
+            <table class="min-w-[640px] w-full bg-white rounded shadow text-left table-filter guru-pembimbing">
+                <thead class="bg-gray-300">
+                    <tr>
+                        <th class="px-4 py-1 text-left">NIP</th>
+                        <th class="px-4 py-1 text-left">Nama Lengkap</th>
+                        <th class="px-4 py-1 text-left">Jurusan</th>
+                        <th class="px-4 py-1 text-left">Email</th>
+                        <th class="px-4 py-1 text-left">Kontak</th>
+                        <th class="px-4 py-1 text-left">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($guruPembimbing as $item)
+                    <tr class="border-b border-gray-300">
+                        <td class="px-4 py-1 text-left">{{ $item->nip }}</td>
+                        <td class="px-4 py-1 text-left">{{ $item->user->nama_lengkap }}</td>
+                        <td class="px-4 py-1 text-left">{{ $item->jurusan }}</td>
+                        <td class="px-4 py-1 text-left">{{ $item->email }}</td>
+                        <td class="px-4 py-1 text-left">{{ $item->kontak }}</td>
+                        <td class="px-4 py-1 text-left space-x-2 flex">
+                            <button
+                                class="flex items-center px-2 bg-blue-200 text-blue-500 rounded hover:bg-blue-300 cursor-pointer"
+                                onclick="showModal('modal-edit-gurupembimbing-{{ $item->id }}')">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                </svg>
+                            </button>
+                            <button
+                                onclick="showModal('modal-hapus-gurupembimbing-{{ $item->id }}')" class="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Siswa -->
     <div id="contentSiswa" class="hidden">
-        <div class="flex justify-between mb-7">
-            <input type="text" placeholder="Cari..." class="border px-2 py-1 rounded w-1/3">
+        <div class="flex justify-between mb-5">
+            <input type="text" placeholder="Cari..." class="border px-2 py-1 rounded w-1/3 cariInput">
         </div>
-        <table class="w-full bg-white rounded shadow text-left">
-            <thead class="bg-gray-300">
-                <tr>
-                    <th class="px-4 py-2 text-left">NIS</th>
-                    <th class="px-4 py-2 text-left">Nama Lengkap</th>
-                    <th class="px-4 py-2 text-left">Kelas</th>
-                    <th class="px-4 py-2 text-left">Jurusan</th>
-                    <th class="px-4 py-2 text-left">Email</th>
-                    <th class="px-4 py-2 text-left">Kontak</th>
-                    <th class="px-4 py-2 text-left">Periode Magang</th>
-                    <th class="px-4 py-2 text-left">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($siswa as $item)
-                <tr class="border-b border-gray-300">
-                    <td class="px-4 py-2 text-left">{{ $item->nis }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->user->nama_lengkap }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->kelas }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->jurusan }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->email }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->kontak }}</td>
-                    <td class="px-4 py-2 text-left">{{ $item->periode }}</td>
-                    <td class="px-4 py-2 text-left space-x-2 flex">
-                        <button
-                            class="flex items-center px-2 bg-blue-200 text-blue-500 rounded hover:bg-blue-300 cursor-pointer"
-                            onclick="showModal('modal-edit-siswa-{{ $item->id }}')">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                            </svg>
-                        </button>
-                        <button onclick="showModal('modal-hapus-siswa-{{ $item->id }}')" class="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                            </svg>
-                        </button>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-[640px] w-full bg-white rounded shadow text-left table-filter siswa">
+                <thead class="bg-gray-300">
+                    <tr>
+                        <th class="px-2 py-1 text-left">NIS</th>
+                        <th class="px-2 py-1 text-left">Nama Lengkap</th>
+                        <th class="px-2 py-1 text-left">Kelas</th>
+                        <th class="px-2 py-1 text-left">Jurusan</th>
+                        <th class="px-2 py-1 text-left">Email</th>
+                        <th class="px-2 py-1 text-left">Kontak</th>
+                        <th class="px-2 py-1 text-left">Periode Magang</th>
+                        <th class="px-2 py-1 text-left">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($siswa as $item)
+                    <tr class="border-b border-gray-300">
+                        <td class="px-2 py-1 text-left">{{ $item->nis }}</td>
+                        <td class="px-2 py-1 text-left">{{ $item->user->nama_lengkap }}</td>
+                        <td class="px-2 py-1 text-left">{{ $item->kelas }}</td>
+                        <td class="px-2 py-1 text-left">{{ $item->jurusan }}</td>
+                        <td class="px-2 py-1 text-left">{{ $item->email }}</td>
+                        <td class="px-2 py-1 text-left">{{ $item->kontak }}</td>
+                        <td class="px-2 py-1 text-left">{{ $item->periode }}</td>
+                        <td class="px-2 py-1 text-left space-x-2 flex">
+                            <button
+                                class="flex items-center px-2 bg-blue-200 text-blue-500 rounded hover:bg-blue-300 cursor-pointer"
+                                onclick="showModal('modal-edit-siswa-{{ $item->id }}')">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                </svg>
+                            </button>
+                            <button onclick="showModal('modal-hapus-siswa-{{ $item->id }}')" class="px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 
 
@@ -234,7 +241,7 @@
                 @csrf
                 @method('PUT')
                 <div class="p-4">
-                    <div class="mb-4">
+                    <div class="mb-2">
                         <label class="block font-medium text-gray-700 mb-1">NIP</label>
                         <input name="nip" value="{{ $item->nip }}" type="text" class="w-full border rounded-lg px-3 py-2" />
                     </div>
@@ -244,7 +251,14 @@
                     </div>
                     <div class="mb-2">
                         <label class="block font-medium text-gray-700 mb-1">Jurusan</label>
-                        <input name="jurusan" value="{{ $item->jurusan }}" type="text" class="w-full border rounded-lg px-3 py-2" />
+                        <select name="jurusan" class="w-full border rounded-lg px-3 py-2">
+                            <option value="">-- Pilih Jurusan --</option>
+                            @foreach ($jurusan as $j)
+                            <option value="{{ $j->nama }}" {{ $item->jurusan == $j->nama ? 'selected' : '' }}>
+                                {{ $j->nama }}
+                            </option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="mb-2">
                         <label class="block font-medium text-gray-700 mb-1">Email</label>
@@ -301,7 +315,14 @@
                     </div>
                     <div>
                         <label class="block font-medium text-gray-700 mb-1">Jurusan</label>
-                        <input name="jurusan" value="{{ $item->jurusan }}" type="text" class="w-full border rounded-lg px-3 py-2" />
+                        <select name="jurusan" class="w-full border rounded-lg px-3 py-2">
+                            <option value="">-- Pilih Jurusan --</option>
+                            @foreach ($jurusan as $j)
+                            <option value="{{ $j->nama }}" {{ $item->jurusan == $j->nama ? 'selected' : '' }}>
+                                {{ $j->nama }}
+                            </option>
+                            @endforeach
+                        </select>
                     </div>
                     <div>
                         <label class="block font-medium text-gray-700 mb-1">Email</label>
@@ -346,6 +367,26 @@
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.querySelectorAll('.cariInput');
+
+        inputs.forEach(input => {
+            input.addEventListener('keyup', function() {
+                const keyword = this.value.toLowerCase();
+
+                // Cari tabel terdekat dari input ini
+                const table = this.closest('div').nextElementSibling;
+                if (!table || !table.tagName.includes('TABLE')) return;
+
+                const rows = table.querySelectorAll('tbody tr');
+                rows.forEach(row => {
+                    const rowText = row.innerText.toLowerCase();
+                    row.style.display = rowText.includes(keyword) ? '' : 'none';
+                });
+            });
+        });
+    });
+
     function show(section) {
         // Semua content di-hide dulu
         document.getElementById('contentPembimbing_industri').classList.add('hidden');

@@ -1,16 +1,13 @@
 @extends('layouts.dashboard-siswa')
 
 @section('content')
-<div class="p-6 text-2xl">
-    <h1 class="text-4xl font-bold mb-4">Kurikulum Aspek Teknis</h1>
+<div class="text-md">
+    <h1 class="text-2xl font-bold mb-5">Aspek Teknis</h1>
     
     @forelse($aspekTeknis as $aspek)
-    <div class="bg-white shadow-md rounded-xl p-4 mb-4 border-2">
+    <div class="bg-white shadow-md rounded-xl p-4 mb-4 border">
         <div class="flex justify-between items-start mb-3">
             <h2 class="font-semibold text-blue-700 underline">{{ $aspek->jurusan }}</h2>
-            <span class="text-sm bg-green-100 text-green-800 px-2 py-1 rounded">
-                Pembimbing: {{ $aspek->pembimbingIndustri->user->nama_lengkap ?? 'Belum ditentukan' }}
-            </span>
         </div>
         
         <div class="mb-3">

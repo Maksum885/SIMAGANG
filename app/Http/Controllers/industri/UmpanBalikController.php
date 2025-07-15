@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Industri;
 use App\Http\Controllers\Controller;
 use App\Models\UmpanBalik;
 use App\Models\Siswa;
+use App\Models\PembimbingIndustri;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,9 +13,17 @@ class UmpanBalikController extends Controller
 {
     public function index()
     {
-        // Ambil siswa yang dibimbing oleh pembimbing industri ini
-        $siswaList = Siswa::with('user')->get(); // Sesuaikan dengan relasi yang ada
-        
+        $pembimbing = PembimbingIndustri::where('user_id', Auth::id())->first();
+
+        if (!$pembimbing) {
+            return redirect()->back()->with('error', 'Data pembimbing tidak ditemukan');
+        }
+
+        $siswaList = Siswa::with('user')
+            ->where('pembimbing_industri_id', $pembimbing->id)
+            ->get();
+
+
         // Ambil umpan balik yang sudah dikirim
         $umpanBalikList = UmpanBalik::with(['siswa.user'])
             ->where('pembimbing_industri_id', Auth::id())
@@ -26,6 +35,13 @@ class UmpanBalikController extends Controller
 
     public function store(Request $request)
     {
+        $pembimbing = PembimbingIndustri::where('user_id', Auth::id())->first();
+
+        $siswa = Siswa::findOrFail($request->siswa_id);
+        if ($siswa->pembimbing_industri_id !== $pembimbing->id) {
+            return redirect()->back()->with('error', 'Anda tidak berwenang memberikan umpan balik ke siswa ini.');
+        }
+
         $request->validate([
             'siswa_id' => 'required|exists:siswas,id',
             'isi_umpan_balik' => 'required|string|min:10',

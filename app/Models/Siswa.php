@@ -25,6 +25,7 @@ class Siswa extends Model
         'periode_mulai',
         'periode_selesai',
         'pembimbing_industri_id',
+        'guru_pembimbing_id',
     ];
 
     public function user(): BelongsTo
@@ -35,6 +36,15 @@ class Siswa extends Model
     public function pembimbingIndustri(): BelongsTo
     {
         return $this->belongsTo(PembimbingIndustri::class);
+    }
+    public function guruPembimbing(): BelongsTo
+    {
+        return $this->belongsTo(GuruPembimbing::class);
+    }
+
+    public function jurusan()
+    {
+        return $this->belongsTo(Jurusan::class);
     }
 
     public function kegiatans(): HasMany
@@ -63,11 +73,11 @@ class Siswa extends Model
     public function getAbsensiStats($bulan = null, $tahun = null)
     {
         $query = $this->absensi();
-        
+
         if ($bulan && $tahun) {
             $query->whereMonth('tanggal', $bulan)->whereYear('tanggal', $tahun);
         }
-        
+
         return [
             'hadir' => $query->where('status', 'hadir')->count(),
             'izin' => $query->whereIn('status', ['izin_sakit', 'izin_keluarga', 'izin_lainnya'])->count(),
@@ -89,4 +99,5 @@ class Siswa extends Model
     {
         return $this->hasMany(Sertifikat::class, 'siswa_id');
     }
+    
 }

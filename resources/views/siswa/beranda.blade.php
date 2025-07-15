@@ -1,28 +1,26 @@
 @extends('layouts.dashboard-siswa')
 
 @section('content')
-    <div class="p-5 text-2xl">
-        <h1 class="text-4xl font-medium font-serif mb-5">
-            Selamat Datang, {{ auth()->user()->nama_lengkap }}!
-        </h1>
+    <div class="text-sm lg:text-md">
+        <h1 class="text:md lg:text-2xl font-medium font-serif mb-5">Selamat Datang, {{ auth()->user()->nama_lengkap }}👋🏻</h1>
 
         <div>
             <div class="bg-white p-10 rounded shadow flex flex-col md:flex-row gap-6 items-start">
                 <!-- Foto Mahasiswa -->
                 <div class="w-full md:w-1/3 flex justify-center">
-                    <img src="{{ asset('images/pp.png') }}" alt="Foto Mahasiswa"
-                        class="w-60 h-auto rounded shadow border" />
+                    <img src="{{ asset('images/pp.png') }}" alt="Foto siswa"
+                        class="w-50 lg:w-60 h-auto rounded shadow border" />
                 </div>
 
                 <!-- Data Mahasiswa -->
                 <div class="w-full md:w-2/3">
                     @if ($siswa)
-                        <table class="table-auto w-full text-xl">
+                        <table class="table-auto w-full">
                             <tr>
-                                <td class="flex font-bold w-40 text-center mb-3 underline">Data Diri Siswa</td>
+                                <td class="flex font-bold w-40 text-center mb-3 underline">Biodata Diri</td>
                             </tr>
                             <tr>
-                                <td class="font-semibold w-40 pb-2">NIS</td>
+                                <td class="font-semibold pb-2">NIS</td>
                                 <td>: {{ $siswa->nis }}</td>
                             </tr>
                             <tr>

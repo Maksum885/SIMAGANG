@@ -50,7 +50,7 @@ class LoginController extends Controller
         }
 
         // Jika gagal login
-        return back()->with('error', 'Username, password, atau role salah.');
+        return back()->with('error', 'Role, Nama Pengguna, atau Kata Sandi salah.');
     }
 
     public function logout(Request $request)

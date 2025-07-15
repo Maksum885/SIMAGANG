@@ -14,7 +14,8 @@ class AspekTeknis extends Model
         'capaian_pembelajaran',
         'elemen',
         'siswa_id',
-        'pembimbing_industri_id'
+        'pembimbing_industri_id',
+        'user_id'
     ];
 
     // Relasi dengan Siswa
@@ -27,5 +28,10 @@ class AspekTeknis extends Model
     public function pembimbingIndustri()
     {
         return $this->belongsTo(PembimbingIndustri::class);
+    }
+
+    public function jurusan()
+    {
+        return $this->belongsTo(Jurusan::class);
     }
 }
