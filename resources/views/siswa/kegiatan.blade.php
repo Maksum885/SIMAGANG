@@ -55,7 +55,7 @@
     <div class="mt-6">
         <form action="{{ route('siswa.kegiatan.export') }}" method="GET" target="_blank">
             <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                Download Rekapan Kegiatan (PDF)
+                Unduh Rekapan Kegiatan (PDF)
             </button>
         </form>
     </div>
