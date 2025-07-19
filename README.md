@@ -8,4 +8,4 @@ Sistem ini dibuat untuk mendukung kegiatan Praktik Kerja Lapangan (PKL) secara d
 - 🎥 [Tutorial Penggunaan Aplikasi](https://youtu.be/Jivxi0cy33M?si=3ccwjP-OHfFQizXI)
 
 ## File Tambahan
-- 📄 Laporan PBL: `LaporanPBL-IF-2C-Malam-Kelompok3.pdf`
+- 📄 Laporan PBL: `https://drive.google.com/drive/folders/1O-U1HqM54kQMfFqWO6J5jx7Y7LSkmPOR?usp=drive_link`
